@@ -85,14 +85,19 @@
 @keyframes darkPulseDriftTwo { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.78; } 50% { transform: translate(-15px, -20px) scale(1.3); opacity: 1; } }
 
 @media (max-width: 768px) {
-  .orbit-one { width: 240px; height: 240px; right: -110px; }
-  .orbit-two { width: 180px; height: 180px; }
-  .ambient-ring { width: 320px; height: 320px; border-width: 30px; left: 4%; }
+  .orbit-one { width: 220px; height: 220px; right: -80px; top: 12%; }
+  .orbit-two { width: 160px; height: 160px; left: -60px; bottom: 12%; }
+  .ambient-ring { width: 280px; height: 280px; border-width: 24px; left: 2%; top: 5%; }
+  .cube-one { width: 64px; height: 64px; }
 }
+
 @media (max-width: 480px) {
-  .ambient-scene { opacity: 0.55; }
-  .cube-one { left: 72%; }
-  .cube-two { display: none; }
+  .ambient-scene { opacity: 0.4; }
+  .orbit-one { width: 180px; height: 180px; right: -90px; }
+  .orbit-two { width: 130px; height: 130px; left: -70px; }
+  .ambient-cube { display: none; }
+  .ambient-ring { width: 200px; height: 200px; border-width: 18px; }
+  .dark-pulse { display: none; }
 }
 
 /* Ensure content stays above the ambient scene */

@@ -542,6 +542,11 @@
         border-left: none;
       }
     }
+    .mobile-text { display: none; }
+    @media (max-width: 480px) {
+      .desktop-text { display: none; }
+      .mobile-text { display: inline; }
+    }
   </style>
 
   <script>
@@ -584,7 +589,10 @@
     <div class="container nav-inner">
       <a class="logo" href="index.html">SK</a>
       <div style="display: flex; align-items: center; gap: 16px;">
-        <a class="back-link" href="index.html#certificates">Back to Portfolio</a>
+        <a class="back-link" href="index.html#certificates">
+          <span class="desktop-text">Back to Portfolio</span>
+          <span class="mobile-text">Back</span>
+        </a>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
       </div>
     </div>

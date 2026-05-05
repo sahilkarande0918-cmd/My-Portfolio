@@ -460,13 +460,13 @@
       color: var(--text-primary);
       font-size: 18px;
       transition: opacity 0.2s ease;
-      padding-top: 2px;
-    }
     .theme-toggle:hover {
       opacity: 0.7;
     }
-
+    .mobile-text { display: none; }
     @media (max-width: 480px) {
+      .desktop-text { display: none; }
+      .mobile-text { display: inline; }
       .theme-toggle {
         margin-left: 0;
         padding-left: 0;
@@ -517,7 +517,10 @@
     <div class="container nav-inner">
       <a class="logo" href="index.html">SK</a>
       <div style="display: flex; align-items: center; gap: 16px;">
-        <a class="back-link" href="index.html#projects">Back to Portfolio</a>
+        <a class="back-link" href="index.html#projects">
+          <span class="desktop-text">Back to Portfolio</span>
+          <span class="mobile-text">Back</span>
+        </a>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
       </div>
     </div>
