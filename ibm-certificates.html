@@ -407,59 +407,25 @@
     }
 
     @media (max-width: 620px) {
-      .container {
-        padding: 0 22px;
-      }
-
-      .hero {
-        padding-top: 56px;
-      }
-
-      .gallery-top {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
+      .container { padding: 0 22px; }
+      .hero { padding-top: 56px; }
+      .gallery-top { align-items: flex-start; flex-direction: column; }
+      
       .ibm-page {
-        flex-basis: 86vw;
-        aspect-ratio: 1 / 1.08;
-        padding: 26px;
+        padding: 24px;
+        flex-basis: 88vw;
+        aspect-ratio: auto;
+        min-height: 380px;
       }
-
-      .ibm-page::after {
-        right: 28px;
-        width: 84px;
-        height: 84px;
-      }
-
-      .ibm-logo {
-        top: 22px;
-        right: 38px;
-        width: 66px;
-        height: 66px;
-        font-size: 9px;
-      }
-
-      .ibm-title {
-        margin-top: 58px;
-        font-size: clamp(24px, 8vw, 34px);
-      }
-
-      .badge-art {
-        width: 106px;
-        height: 106px;
-        font-size: 12px;
-      }
-
-      .career-top {
-        flex-direction: column;
-        margin-bottom: 28px;
-      }
-
-      .career-name {
-        margin-bottom: 26px;
-        font-size: 42px;
-      }
+      .ibm-title { font-size: 26px; margin-top: 40px; }
+      .person { font-size: 20px; }
+      .issued { margin: 20px 0 5px; }
+      .ibm-logo { width: 60px; height: 60px; right: 20px; top: 20px; font-size: 9px; }
+      .ibm-page::after { right: 10px; width: 80px; height: 80px; }
+      
+      .badge-art { width: 90px; height: 90px; font-size: 10px; }
+      .career-top { flex-direction: column; margin-bottom: 20px; }
+      .career-name { margin-bottom: 16px; font-size: 32px; }
     }
 
     .theme-toggle {
