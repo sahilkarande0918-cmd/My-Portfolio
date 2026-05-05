@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahil Karande | Certificates</title>
+  <link rel="stylesheet" href="animations.css">
+  <style>
+    :root {
+      --accent: #2563EB;
+      --accent-hover: #1d4ed8;
+      --background: #fafaf9;
+      --surface: #ffffff;
+      --surface-strong: #ffffff;
+      --border-color: #e5e5e3;
+      --border: 1px solid var(--border-color);
+      --text-primary: #1a1a1a;
+      --text-muted: #667085;
+      --radius: 18px;
+    }
+
+    [data-theme="dark"] {
+      --background: #0b0f19;
+      --surface: #121826;
+      --surface-strong: #171f31;
+      --border-color: #293248;
+      --border: 1px solid var(--border-color);
+      --text-primary: #f4f7fb;
+      --text-muted: #a4adbd;
+      --accent: #8b9bff;
+      --accent-hover: #b8c1ff;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-color: rgba(37, 99, 235, 0.45) transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text-primary);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: -50%;
+      z-index: -2;
+      background-color: var(--background);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(26, 26, 26, 0.04) 0%, transparent 40%);
+      background-size: 100% 100%;
+      content: "";
+      animation: softOrbDrift 25s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+
+    @keyframes softOrbDrift {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: var(--border);
+      background: rgba(250, 250, 249, 0.8);
+      
+      -webkit-
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .logo {
+      color: var(--accent);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      font-style: italic;
+    }
+
+    .back-link {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .hero {
+      padding: 86px 0 46px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .label::before {
+      width: 30px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(44px, 7vw, 86px);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .intro {
+      max-width: 720px;
+      color: var(--text-muted);
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .gallery-shell {
+      padding: 22px 0 90px;
+    }
+
+    .gallery-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .gallery-top p {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .count {
+      padding: 8px 14px;
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .certificate-track {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding: 8px 2px 28px;
+      scroll-behavior: smooth;
+      scroll-padding: 40px;
+      scroll-snap-type: x mandatory;
+      scrollbar-color: rgba(37, 99, 235, 0.48) rgba(37, 99, 235, 0.08);
+      scrollbar-width: thin;
+      will-change: scroll-position;
+    }
+
+    .certificate-track::-webkit-scrollbar {
+      height: 12px;
+    }
+
+    .certificate-track::-webkit-scrollbar-track {
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .certificate-track::-webkit-scrollbar-thumb {
+      border: 3px solid rgba(250, 250, 249, 0.95);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.52);
+      background-clip: padding-box;
+    }
+
+    .certificate-page {
+      position: relative;
+      display: grid;
+      flex: 0 0 min(650px, 82vw);
+      aspect-ratio: 1.38 / 1;
+      align-content: center;
+      justify-items: center;
+      padding: 42px;
+      border: 1px solid rgba(26, 26, 26, 0.12);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.32), transparent 48%),
+        var(--cert-bg, #c4d9d1);
+      box-shadow: 0 18px 50px rgba(26, 26, 26, 0.1);
+      scroll-snap-align: center;
+      overflow: hidden;
+      transform: translateZ(0);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .certificate-page:hover {
+      box-shadow: 0 26px 70px rgba(26, 26, 26, 0.14);
+      transform: translateY(-3px) translateZ(0);
+    }
+
+    .certificate-badge {
+      position: absolute;
+      top: 34px;
+      left: 50%;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 42px;
+      padding: 0 22px;
+      border: 2px solid #111;
+      border-radius: 999px;
+      color: #111;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .certificate-badge::before {
+      display: grid;
+      width: 26px;
+      height: 26px;
+      place-items: center;
+      border: 2px solid #111;
+      border-radius: 50%;
+      content: "✓";
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .certificate-person {
+      margin: 58px 0 10px;
+      color: #111;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1;
+    }
+
+    .certificate-completed {
+      margin-bottom: 22px;
+      color: #111;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+    }
+
+    .certificate-title {
+      max-width: 560px;
+      color: #111;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      text-align: center;
+    }
+
+    .certificate-footer {
+      position: absolute;
+      right: 0;
+      bottom: 34px;
+      left: 0;
+      color: #111;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* Force dark text for certificate content even in dark mode */
+    [data-theme="dark"] .certificate-page,
+    [data-theme="dark"] .certificate-page p,
+    [data-theme="dark"] .certificate-page h2,
+    [data-theme="dark"] .certificate-page span,
+    [data-theme="dark"] .certificate-page div {
+      color: #111 !important;
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        padding: 0 22px;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .gallery-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .certificate-page {
+        flex-basis: 86vw;
+        aspect-ratio: 1.16 / 1;
+        padding: 24px;
+      }
+
+      .certificate-badge {
+        top: 22px;
+        max-width: calc(100% - 28px);
+        min-height: 36px;
+        gap: 7px;
+        padding: 0 12px;
+        font-size: 8px;
+      }
+
+      .certificate-badge::before {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+      }
+
+      .certificate-title {
+        font-size: clamp(24px, 8vw, 34px);
+      }
+
+      .certificate-footer {
+        bottom: 22px;
+        font-size: 15px;
+      }
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-left: 16px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-color);
+      background: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 18px;
+      transition: opacity 0.2s ease;
+      padding-top: 2px;
+    }
+    .theme-toggle:hover {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+      .theme-toggle {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+      }
+    }
+  </style>
+
+  <script>
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        if (savedTheme === 'dark') {
+          themeToggle.innerHTML = '☀️';
+        } else {
+          themeToggle.innerHTML = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('portfolio-theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-orbit orbit-one"></span>
+    <span class="ambient-orbit orbit-two"></span>
+    <span class="ambient-cube cube-one"></span>
+    <span class="ambient-cube cube-two"></span>
+    <span class="ambient-ring"></span>
+    <span class="dark-wave wave-one"></span>
+    <span class="dark-wave wave-two"></span>
+    <span class="dark-pulse pulse-one"></span>
+    <span class="dark-pulse pulse-two"></span>
+  </div>
+  <nav class="page-nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">SK</a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a class="back-link" href="index.html#certificates">Back to Portfolio</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="container">
+        <p class="label">Certificates</p>
+        <h1>Anthropic Certificates</h1>
+        <p class="intro">A focused gallery of completed Anthropic learning work. Scroll horizontally to view every certificate.</p>
+      </div>
+    </header>
+
+    <section class="gallery-shell" aria-label="Anthropic certificate gallery">
+      <div class="container">
+        <div class="gallery-top">
+          <p>Swipe sideways or use the horizontal scrollbar.</p>
+          <span class="count">9 Certificates</span>
+        </div>
+        <div class="certificate-track">
+          <article class="certificate-page" style="--cert-bg: #c4d9d1;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Claude with Google Vertex AI</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #e8dfd0;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Claude 101</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #81956a;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">AI Fluency: Framework &amp; Foundations</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #cfcedf;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">AI Fluency for students</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #c2d8d0;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">AI Fluency for nonprofits</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #72a3d0;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Introduction to agent skills</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #c2d8d0;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Introduction to subagents</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #cfcedf;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Introduction to Claude Cowork</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+          <article class="certificate-page" style="--cert-bg: #c2d8d0;">
+            <div class="certificate-badge">Certificate of Completion</div>
+            <p class="certificate-person">Sahil Karande</p>
+            <p class="certificate-completed">has completed</p>
+            <h2 class="certificate-title">Introduction to Model Context Protocol</h2>
+            <span class="certificate-footer">Anthropic</span>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+
+

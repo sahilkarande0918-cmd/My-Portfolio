@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahil Karande | Drishti 1.0 Project</title>
+  <meta name="description" content="Drishti 1.0 — Real-time traffic sign & currency detection system using YOLOv8 and custom-trained CNN, deployed on Hugging Face + Vercel.">
+  <link rel="stylesheet" href="animations.css">
+  <style>
+    :root {
+      --accent: #2563EB;
+      --accent-hover: #1d4ed8;
+      --background: #fafaf9;
+      --surface: #ffffff;
+      --surface-strong: #ffffff;
+      --border-color: #e5e5e3;
+      --border: 1px solid var(--border-color);
+      --text-primary: #1a1a1a;
+      --text-muted: #667085;
+      --hero-bg: #e6edfa;
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.06);
+      --radius: 18px;
+      --radius-sm: 10px;
+      --shadow-subtle: 0 18px 60px rgba(26, 26, 26, 0.055);
+      --shadow-hover: 0 28px 80px rgba(26, 26, 26, 0.1);
+      /* Architecture flow colors */
+      --flow-green: #48bb78;
+      --flow-teal: #319795;
+      --flow-purple: #9f7aea;
+      --flow-orange: #ed8936;
+    }
+
+    [data-theme="dark"] {
+      --background: #0b0f19;
+      --surface: #121826;
+      --surface-strong: #171f31;
+      --border-color: #293248;
+      --border: 1px solid var(--border-color);
+      --text-primary: #f4f7fb;
+      --text-muted: #a4adbd;
+      --accent: #8b9bff;
+      --accent-hover: #b8c1ff;
+      --hero-bg: #1e293b;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.32);
+      --shadow-hover: 0 28px 80px rgba(0, 0, 0, 0.6);
+      --flow-green: #48bb78;
+      --flow-teal: #319795;
+      --flow-purple: #9f7aea;
+      --flow-orange: #ed8936;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text-primary);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: -50%;
+      z-index: -2;
+      background-color: var(--background);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(26, 26, 26, 0.04) 0%, transparent 40%);
+      background-size: 100% 100%;
+      content: "";
+      animation: softOrbDrift 25s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+
+    @keyframes softOrbDrift {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 40px; }
+
+    /* NAV */
+    .page-nav {
+      position: sticky; top: 0; z-index: 10;
+      border-bottom: var(--border);
+      background: rgba(250, 250, 249, 0.82);
+      
+      -webkit-
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between; min-height: 68px;
+    }
+    .logo {
+      color: var(--accent);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px; font-style: italic;
+    }
+    .back-link {
+      color: var(--text-primary); font-size: 14px; font-weight: 800; letter-spacing: 0.05em;
+    }
+
+    /* HERO */
+    .project-hero { padding: 72px 0 48px; }
+    .hero-top {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.07);
+      color: var(--accent);
+      font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .project-hero h1 {
+      max-width: 700px; margin-bottom: 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400; line-height: 1.05;
+    }
+    .project-hero .desc {
+      max-width: 720px; margin-bottom: 28px;
+      color: var(--text-muted); font-size: 19px; line-height: 1.65;
+    }
+    .live-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      border: none; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--accent), #1f4fd3);
+      box-shadow: 0 14px 36px rgba(37, 99, 235, 0.28);
+      color: #fff; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .live-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 48px rgba(37, 99, 235, 0.35);
+    }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 8px #22c55e;
+      animation: pulse-dot 1.8s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.6); }
+    }
+
+    /* STATS */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      margin-bottom: 56px;
+      border: var(--border); border-radius: var(--radius);
+      background: var(--border-color);
+      box-shadow: var(--shadow-subtle); overflow: hidden;
+    }
+    .stat-item {
+      padding: 28px 22px;
+      background: var(--surface);
+      
+      transition: background 0.2s ease;
+    }
+    .stat-item:hover { background: var(--surface-strong); }
+    .stat-label-top {
+      display: block; margin-bottom: 4px;
+      color: var(--text-muted); font-size: 13px; font-weight: 600;
+    }
+    .stat-value {
+      display: block; margin-bottom: 4px;
+      color: var(--accent); font-size: 34px; font-weight: 900; line-height: 1.1;
+    }
+    .stat-label {
+      color: var(--text-primary); font-size: 13px; font-weight: 600; line-height: 1.35;
+    }
+
+    /* SECTION SHARED */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 14px;
+      color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+    }
+    .section-label::before {
+      width: 28px; height: 1px; background: currentColor; content: "";
+    }
+    .section-heading {
+      margin-bottom: 32px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 4.5vw, 48px);
+      font-weight: 400; line-height: 1.1;
+    }
+    .content-section {
+      padding: 48px 0; border-top: var(--border);
+    }
+
+    /* ARCHITECTURE FLOW */
+    .arch-pipeline {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 32px 0;
+      overflow-x: auto;
+    }
+    .arch-block {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      min-width: 160px; padding: 18px 22px;
+      border: var(--border); border-radius: var(--radius);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-subtle);
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .arch-block:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+    .arch-block-name {
+      font-size: 16px; font-weight: 800;
+    }
+    .arch-block-sub {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    }
+    .arch-block.camera { border-left: 4px solid var(--flow-green); }
+    .arch-block.camera .arch-block-name { color: var(--flow-green); }
+    .arch-block.camera .arch-block-sub { color: var(--flow-green); opacity: 0.8; }
+
+    .arch-block.frontend { border-left: 4px solid var(--flow-teal); }
+    .arch-block.frontend .arch-block-name { color: var(--flow-teal); }
+    .arch-block.frontend .arch-block-sub { color: var(--flow-teal); opacity: 0.8; }
+
+    .arch-block.backend { border-left: 4px solid var(--flow-purple); }
+    .arch-block.backend .arch-block-name { color: var(--flow-purple); }
+    .arch-block.backend .arch-block-sub { color: var(--flow-purple); opacity: 0.8; }
+
+    .arch-block.model { border-left: 4px solid var(--flow-orange); }
+    .arch-block.model .arch-block-name { color: var(--flow-orange); }
+    .arch-block.model .arch-block-sub { color: var(--flow-orange); opacity: 0.8; }
+
+    .arch-arrow {
+      display: flex; align-items: center; justify-content: center;
+      width: 48px; flex-shrink: 0;
+      color: var(--border-color);
+    }
+    .arch-arrow svg {
+      width: 32px; height: 32px;
+    }
+
+    .arch-feedback {
+      margin-top: 12px; padding-top: 18px;
+      border-top: 2px dashed var(--border-color);
+      color: var(--text-muted);
+      font-size: 14px; font-weight: 600; font-style: italic;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    }
+    .feature-card {
+      padding: 28px;
+      border: var(--border); border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-subtle);
+      transition: all 0.2s ease;
+    }
+    .feature-card:hover {
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+    .feature-card::before {
+      display: block; width: 32px; height: 3px;
+      margin-bottom: 16px; border-radius: 2px;
+      background: var(--accent);
+      content: "";
+    }
+    .feature-card h3 {
+      margin-bottom: 8px; font-size: 17px; font-weight: 800; line-height: 1.3;
+    }
+    .feature-card p {
+      color: var(--text-muted); font-size: 14px; line-height: 1.6;
+    }
+
+    /* TECH STACK */
+    .stack-wrap {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .stack-pill {
+      padding: 10px 20px;
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.06);
+      color: #234899;
+      font-size: 14px; font-weight: 700;
+      transition: all 0.15s ease;
+    }
+    .stack-pill:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      padding: 34px 0; border-top: var(--border);
+      color: var(--text-muted); font-size: 14px; text-align: center;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeInUp 0.6s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { padding: 0 22px; }
+      .project-hero { padding: 52px 0 36px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: 1fr; }
+      .arch-pipeline { flex-direction: column; gap: 0; }
+      .arch-arrow { transform: rotate(90deg); width: auto; height: 36px; }
+      .stat-value { font-size: 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .project-hero h1 { font-size: 36px; }
+      .project-hero .desc { font-size: 16px; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .feature-card { padding: 20px; }
+      .arch-block { min-width: 140px; padding: 14px 16px; }
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-left: 16px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-color);
+      background: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 18px;
+      transition: opacity 0.2s ease;
+      padding-top: 2px;
+    }
+    .theme-toggle:hover {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+      .theme-toggle {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+      }
+    }
+  </style>
+
+  <script>
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        if (savedTheme === 'dark') {
+          themeToggle.innerHTML = '☀️';
+        } else {
+          themeToggle.innerHTML = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('portfolio-theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-orbit orbit-one"></span>
+    <span class="ambient-orbit orbit-two"></span>
+    <span class="ambient-cube cube-one"></span>
+    <span class="ambient-cube cube-two"></span>
+    <span class="ambient-ring"></span>
+    <span class="dark-wave wave-one"></span>
+    <span class="dark-wave wave-two"></span>
+    <span class="dark-pulse pulse-one"></span>
+    <span class="dark-pulse pulse-two"></span>
+  </div>
+
+  <!-- NAV -->
+  <nav class="page-nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">SK</a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a class="back-link" href="index.html#projects">Back to Portfolio</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <header class="project-hero">
+      <div class="container">
+        <div class="hero-top animate-in">
+          <span class="hero-badge">AI / ML / 2026</span>
+        </div>
+        <h1 class="animate-in delay-1">Drishti 1.0</h1>
+        <p class="desc animate-in delay-2">A real-time traffic sign recognition system built using a custom-trained CNN model deployed on Hugging Face Spaces, with a React frontend on Vercel. Designed to assist visually impaired users by detecting and announcing traffic signs in real time through the phone camera.</p>
+        <a class="live-btn animate-in delay-3" href="https://drishti-ai-frontend-omega.vercel.app/" target="_blank" rel="noopener noreferrer">
+          <span class="live-dot"></span>
+          Visit Live Website
+        </a>
+      </div>
+    </header>
+
+    <!-- STATS -->
+    <section class="container" style="padding-bottom: 8px;">
+      <div class="stats-bar animate-in delay-2">
+        <div class="stat-item">
+          <span class="stat-label-top">Model accuracy</span>
+          <span class="stat-value">~92%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label-top">Sign classes</span>
+          <span class="stat-value">43</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label-top">Training images</span>
+          <span class="stat-value">50K+</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label-top">Deployment</span>
+          <span class="stat-value" style="font-size: 24px;">Hugging Face</span>
+          <span class="stat-label">+ Vercel</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM ARCHITECTURE -->
+    <section class="content-section" id="architecture">
+      <div class="container">
+        <p class="section-label">SYSTEM ARCHITECTURE</p>
+        <h2 class="section-heading">How It Works</h2>
+        <div class="arch-pipeline animate-in">
+          <div class="arch-block camera">
+            <span class="arch-block-name">Camera</span>
+            <span class="arch-block-sub">Phone input</span>
+          </div>
+          <div class="arch-arrow">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16h16M20 10l6 6-6 6"/></svg>
+          </div>
+          <div class="arch-block frontend">
+            <span class="arch-block-name">React Frontend</span>
+            <span class="arch-block-sub">Vercel deploy</span>
+          </div>
+          <div class="arch-arrow">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16h16M20 10l6 6-6 6"/></svg>
+          </div>
+          <div class="arch-block backend">
+            <span class="arch-block-name">FastAPI Backend</span>
+            <span class="arch-block-sub">Hugging Face</span>
+          </div>
+          <div class="arch-arrow">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16h16M20 10l6 6-6 6"/></svg>
+          </div>
+          <div class="arch-block model">
+            <span class="arch-block-name">CNN Model</span>
+            <span class="arch-block-sub">Custom trained</span>
+          </div>
+        </div>
+        <p class="arch-feedback animate-in delay-1">← prediction returned + spoken aloud to user</p>
+      </div>
+    </section>
+
+    <!-- KEY FEATURES -->
+    <section class="content-section" id="features">
+      <div class="container">
+        <p class="section-label">KEY FEATURES</p>
+        <h2 class="section-heading">Capabilities</h2>
+        <div class="features-grid">
+          <article class="feature-card animate-in">
+            <h3>Real-time detection</h3>
+            <p>Live camera feed processed frame by frame through the CNN model</p>
+          </article>
+          <article class="feature-card animate-in delay-1">
+            <h3>Custom trained CNN</h3>
+            <p>Trained on GTSRB — 43 sign classes, 50K+ images, ~92% val accuracy</p>
+          </article>
+          <article class="feature-card animate-in delay-2">
+            <h3>Full-stack deployment</h3>
+            <p>FastAPI backend on Hugging Face, React frontend deployed on Vercel</p>
+          </article>
+          <article class="feature-card animate-in delay-3">
+            <h3>Accessibility focused</h3>
+            <p>Built for visually impaired users — voice output for every detection</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="content-section" id="stack">
+      <div class="container">
+        <p class="section-label">TECH STACK</p>
+        <h2 class="section-heading">Built With</h2>
+        <div class="stack-wrap animate-in">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">TensorFlow</span>
+          <span class="stack-pill">Keras</span>
+          <span class="stack-pill">FastAPI</span>
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">OpenCV</span>
+          <span class="stack-pill">Hugging Face</span>
+          <span class="stack-pill">Vercel</span>
+          <span class="stack-pill">NumPy</span>
+          <span class="stack-pill">Matplotlib</span>
+          <span class="stack-pill">GTSRB Dataset</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 Sahil Karande</p>
+    </div>
+  </footer>
+
+</body>
+</html>
+
+

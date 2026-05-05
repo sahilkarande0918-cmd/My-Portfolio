@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahil Karande | REVA – Real Estate AI Agent</title>
+  <meta name="description" content="REVA — AI-powered real estate assistant built with n8n automation workflows for property discovery, lead handling, and customer interaction.">
+  <link rel="stylesheet" href="animations.css">
+  <style>
+    :root {
+      --accent: #2563EB;
+      --accent-hover: #1d4ed8;
+      --background: #fafaf9;
+      --surface: #ffffff;
+      --surface-strong: #ffffff;
+      --border-color: #e5e5e3;
+      --border: 1px solid var(--border-color);
+      --text-primary: #1a1a1a;
+      --text-muted: #667085;
+      --hero-bg: #e6edfa;
+      --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.06);
+      --radius: 18px;
+    }
+
+    [data-theme="dark"] {
+      --background: #0b0f19;
+      --surface: #121826;
+      --surface-strong: #171f31;
+      --border-color: #293248;
+      --border: 1px solid var(--border-color);
+      --text-primary: #f4f7fb;
+      --text-muted: #a4adbd;
+      --accent: #8b9bff;
+      --accent-hover: #b8c1ff;
+      --hero-bg: #1e293b;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text-primary);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: -50%;
+      z-index: -2;
+      background-color: var(--background);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(26, 26, 26, 0.04) 0%, transparent 40%);
+      background-size: 100% 100%;
+      content: "";
+      animation: softOrbDrift 25s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+
+    @keyframes softOrbDrift {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: 100%; max-width: 1600px; margin: 0 auto; padding: 0 40px; }
+
+    /* NAV */
+    .page-nav {
+      position: sticky; top: 0; z-index: 10;
+      border-bottom: var(--border);
+      background: rgba(250, 250, 249, 0.82);
+       -webkit-
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; min-height: 68px; }
+    .logo { color: var(--accent); font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-style: italic; }
+    .back-link { color: var(--text-primary); font-size: 14px; font-weight: 800; letter-spacing: 0.05em; }
+
+    /* HERO */
+    .project-hero { padding: 72px 0 48px; }
+    .hero-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px;
+      border: 1px solid rgba(37, 99, 235, 0.22); border-radius: 999px;
+      background: rgba(37, 99, 235, 0.07);
+      color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .project-hero h1 {
+      max-width: 700px; margin-bottom: 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(40px, 6vw, 72px); font-weight: 400; line-height: 1.05;
+    }
+    .project-hero .desc {
+      max-width: 720px; margin-bottom: 28px;
+      color: var(--text-muted); font-size: 19px; line-height: 1.65;
+    }
+
+    /* SHARED SECTIONS */
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px;
+      color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+    }
+    .section-label::before { width: 28px; height: 1px; background: currentColor; content: ""; }
+    .section-heading {
+      margin-bottom: 32px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 4.5vw, 48px); font-weight: 400; line-height: 1.1;
+    }
+    .content-section { padding: 48px 0; border-top: var(--border); }
+
+    /* PROBLEM / SOLUTION */
+    .dual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .info-card {
+      padding: 32px; border: var(--border); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+    .info-card h3 {
+      margin-bottom: 16px; color: var(--accent);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .info-card p { color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+    .info-card ul { list-style: none; padding: 0; }
+    .info-card ul li {
+      position: relative; padding-left: 22px; margin-bottom: 10px;
+      color: var(--text-muted); font-size: 15px; line-height: 1.55;
+    }
+    .info-card ul li::before {
+      content: ""; position: absolute; left: 0; top: 8px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); opacity: 0.5;
+    }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .feature-card {
+      display: flex; align-items: flex-start; gap: 14px; padding: 28px;
+      border: var(--border); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+    .feature-check {
+      flex-shrink: 0; display: grid; place-items: center;
+      width: 28px; height: 28px; margin-top: 2px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--accent); font-size: 14px; font-weight: 900;
+    }
+    .feature-card h3 { margin-bottom: 2px; font-size: 16px; font-weight: 800; }
+
+    /* HOW IT WORKS */
+    .steps-flow { display: flex; flex-direction: column; gap: 0; max-width: 600px; }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 18px; position: relative;
+      padding: 22px 0;
+    }
+    .step-item:not(:last-child)::after {
+      content: ""; position: absolute; left: 19px; top: 52px; bottom: 0;
+      width: 2px; background: linear-gradient(var(--accent), var(--border-color));
+    }
+    .step-number {
+      flex-shrink: 0; display: grid; place-items: center;
+      width: 40px; height: 40px;
+      border: 2px solid var(--accent); border-radius: 50%;
+      background: rgba(37, 99, 235, 0.06);
+      color: var(--accent); font-size: 16px; font-weight: 900;
+    }
+    .step-text { font-size: 16px; line-height: 1.5; padding-top: 8px; color: var(--text-muted); }
+
+    /* WORKFLOW IMAGE */
+    .workflow-showcase {
+      margin-top: 12px; padding: 20px;
+      border: var(--border); border-radius: var(--radius);
+      background: #111; 
+      box-shadow: var(--shadow-soft); overflow: hidden;
+    }
+    .workflow-showcase img {
+      width: 100%; height: auto; display: block; border-radius: 8px;
+    }
+    .workflow-caption {
+      margin-top: 12px; text-align: center;
+      color: #94a3b8; font-size: 13px; font-weight: 600; font-style: italic;
+    }
+
+    /* IMPACT */
+    .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .impact-card {
+      padding: 24px 18px; text-align: center;
+      border: var(--border); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow-soft);
+      transition: all 0.2s ease;
+    }
+    .impact-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+    .impact-card p { color: var(--text-muted); font-size: 14px; font-weight: 600; line-height: 1.45; }
+
+    /* TECH STACK */
+    .stack-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-pill {
+      padding: 10px 20px;
+      border: 1px solid rgba(37, 99, 235, 0.18); border-radius: 999px;
+      background: rgba(37, 99, 235, 0.06);
+      color: #234899; font-size: 14px; font-weight: 700;
+      transition: all 0.15s ease;
+    }
+
+    /* FUTURE / ROLE */
+    .future-list, .role-list { list-style: none; padding: 0; }
+    .future-list li, .role-list li {
+      position: relative; padding: 12px 0 12px 28px;
+      border-bottom: 1px solid rgba(223, 223, 220, 0.6);
+      color: var(--text-muted); font-size: 15px; line-height: 1.55;
+    }
+    .future-list li::before { content: "🔮"; position: absolute; left: 0; }
+    .role-list li::before { content: "→"; position: absolute; left: 4px; color: var(--accent); font-weight: 900; }
+
+    /* QUOTE */
+    .closing-quote {
+      margin-top: 48px; padding: 36px;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: var(--surface-tint);
+      color: #334155;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px; font-style: italic; line-height: 1.65;
+    }
+
+    /* FOOTER */
+    .site-footer { padding: 34px 0; border-top: var(--border); color: var(--text-muted); font-size: 14px; text-align: center; }
+
+    /* ANIM */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-in { animation: fadeInUp 0.6s ease both; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { padding: 0 22px; }
+      .project-hero { padding: 52px 0 36px; }
+      .dual-grid, .features-grid { grid-template-columns: 1fr; }
+      .impact-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .project-hero h1 { font-size: 36px; }
+      .project-hero .desc { font-size: 16px; }
+      .impact-grid { grid-template-columns: 1fr; }
+      .feature-card { padding: 20px; }
+      .theme-toggle {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+      }
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-left: 16px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-color);
+      background: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 18px;
+      transition: opacity 0.2s ease;
+      padding-top: 2px;
+    }
+    .theme-toggle:hover {
+      opacity: 0.7;
+    }
+  </style>
+
+  <script>
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        if (savedTheme === 'dark') {
+          themeToggle.innerHTML = '☀️';
+        } else {
+          themeToggle.innerHTML = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('portfolio-theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-orbit orbit-one"></span>
+    <span class="ambient-orbit orbit-two"></span>
+    <span class="ambient-cube cube-one"></span>
+    <span class="ambient-cube cube-two"></span>
+    <span class="ambient-ring"></span>
+    <span class="dark-wave wave-one"></span>
+    <span class="dark-wave wave-two"></span>
+    <span class="dark-pulse pulse-one"></span>
+    <span class="dark-pulse pulse-two"></span>
+  </div>
+
+  <!-- NAV -->
+  <nav class="page-nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">SK</a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a class="back-link" href="index.html#projects">Back to Portfolio</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <header class="project-hero">
+      <div class="container">
+        <div class="hero-top animate-in">
+          <span class="hero-badge">AI Agent / Automation / 2026</span>
+        </div>
+        <h1 class="animate-in delay-1">REVA</h1>
+        <p class="desc animate-in delay-2">An AI-powered real estate assistant designed to automate property discovery, lead handling, and customer interaction. Built with intelligent n8n automation workflows to reduce manual effort and deliver instant, personalized responses to users.</p>
+      </div>
+    </header>
+
+    <!-- PROBLEM & SOLUTION -->
+    <section class="content-section" id="context">
+      <div class="container">
+        <p class="section-label">CONTEXT</p>
+        <h2 class="section-heading">Problem &amp; Solution</h2>
+        <div class="dual-grid">
+          <div class="info-card animate-in">
+            <h3>The Problem</h3>
+            <ul>
+              <li>Slow response to customer inquiries</li>
+              <li>Manual lead handling and follow-ups</li>
+              <li>Poor personalization in property recommendations</li>
+            </ul>
+          </div>
+          <div class="info-card animate-in delay-1">
+            <h3>The Solution</h3>
+            <p>REVA uses <strong>AI agents + automation workflows (n8n)</strong> to:</p>
+            <ul style="margin-top: 12px;">
+              <li>Instantly respond to property queries</li>
+              <li>Recommend properties based on user preferences</li>
+              <li>Automate lead capture and follow-ups</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY FEATURES -->
+    <section class="content-section" id="features">
+      <div class="container">
+        <p class="section-label">KEY FEATURES</p>
+        <h2 class="section-heading">What REVA Does</h2>
+        <div class="features-grid">
+          <article class="feature-card animate-in">
+            <span class="feature-check">✓</span>
+            <div><h3>AI Chat-based Property Assistant</h3></div>
+          </article>
+          <article class="feature-card animate-in delay-1">
+            <span class="feature-check">✓</span>
+            <div><h3>Smart Property Recommendations</h3></div>
+          </article>
+          <article class="feature-card animate-in delay-2">
+            <span class="feature-check">✓</span>
+            <div><h3>Automated Lead Management</h3></div>
+          </article>
+          <article class="feature-card animate-in delay-3">
+            <span class="feature-check">✓</span>
+            <div><h3>Real-time Query Handling</h3></div>
+          </article>
+          <article class="feature-card animate-in delay-4" style="grid-column: 1 / -1; max-width: 50%;">
+            <span class="feature-check">✓</span>
+            <div><h3>Workflow Automation using n8n</h3></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="content-section" id="how">
+      <div class="container">
+        <p class="section-label">HOW IT WORKS</p>
+        <h2 class="section-heading">Agent Pipeline</h2>
+        <div class="steps-flow animate-in">
+          <div class="step-item">
+            <span class="step-number">1</span>
+            <span class="step-text">User enters query (budget, location, type)</span>
+          </div>
+          <div class="step-item">
+            <span class="step-number">2</span>
+            <span class="step-text">AI processes input and filters property data</span>
+          </div>
+          <div class="step-item">
+            <span class="step-number">3</span>
+            <span class="step-text">n8n workflows trigger automated responses</span>
+          </div>
+          <div class="step-item">
+            <span class="step-number">4</span>
+            <span class="step-text">Leads are captured and stored</span>
+          </div>
+          <div class="step-item">
+            <span class="step-number">5</span>
+            <span class="step-text">Follow-ups and suggestions are automated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOW IMAGE -->
+    <section class="content-section" id="workflow">
+      <div class="container">
+        <p class="section-label">N8N WORKFLOW</p>
+        <h2 class="section-heading">Automation Architecture</h2>
+        <div class="workflow-showcase animate-in">
+          <img src="reva-workflow.jpg" alt="REVA n8n automation workflow showing webhook triggers, AI agents, Google Sheets integration, and automated response pipelines" loading="lazy">
+          <p class="workflow-caption">n8n workflow — Webhook → AI Agents → Google Sheets → Automated Responses</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="content-section" id="impact">
+      <div class="container">
+        <p class="section-label">IMPACT</p>
+        <h2 class="section-heading">Results</h2>
+        <div class="impact-grid animate-in">
+          <div class="impact-card">
+            <span class="impact-icon">⚡</span>
+            <p>Reduces response time to seconds</p>
+          </div>
+          <div class="impact-card">
+            <span class="impact-icon">🤖</span>
+            <p>Minimizes manual workload</p>
+          </div>
+          <div class="impact-card">
+            <span class="impact-icon">📈</span>
+            <p>Improves lead conversion efficiency</p>
+          </div>
+          <div class="impact-card">
+            <span class="impact-icon">🎯</span>
+            <p>Provides personalized user experience</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="content-section" id="stack">
+      <div class="container">
+        <p class="section-label">TECH STACK</p>
+        <h2 class="section-heading">Built With</h2>
+        <div class="stack-wrap animate-in">
+          <span class="stack-pill">n8n</span>
+          <span class="stack-pill">AI APIs</span>
+          <span class="stack-pill">Groq Chat Model</span>
+          <span class="stack-pill">Google Gemini</span>
+          <span class="stack-pill">Google Sheets</span>
+          <span class="stack-pill">Gmail</span>
+          <span class="stack-pill">REST APIs</span>
+          <span class="stack-pill">Webhooks</span>
+          <span class="stack-pill">JavaScript</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUTURE & ROLE -->
+    <section class="content-section" id="future-role">
+      <div class="container">
+        <div class="dual-grid">
+          <div class="info-card animate-in">
+            <h3>Future Scope</h3>
+            <ul class="future-list">
+              <li>Voice-enabled assistant</li>
+              <li>Integration with real-time property listings</li>
+              <li>Advanced analytics for real estate businesses</li>
+            </ul>
+          </div>
+          <div class="info-card animate-in delay-1">
+            <h3>My Role</h3>
+            <ul class="role-list">
+              <li>Designed AI agent workflow</li>
+              <li>Built automation pipelines using n8n</li>
+              <li>Integrated APIs for real-time responses</li>
+              <li>Developed end-to-end system logic</li>
+            </ul>
+          </div>
+        </div>
+
+        <blockquote class="closing-quote animate-in delay-2">
+          REVA demonstrates the power of AI agents + automation in transforming traditional industries like real estate.
+        </blockquote>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><p>&copy; 2026 Sahil Karande</p></div>
+  </footer>
+
+</body>
+</html>
+
+

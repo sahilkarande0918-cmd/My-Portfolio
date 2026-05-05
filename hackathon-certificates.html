@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sahil Karande | Hackathon Certificates</title>
+  <link rel="stylesheet" href="animations.css">
+  <style>
+    :root {
+      --accent: #2563EB;
+      --accent-hover: #1d4ed8;
+      --background: #fafaf9;
+      --surface: #ffffff;
+      --surface-strong: #ffffff;
+      --border-color: #e5e5e3;
+      --border: 1px solid var(--border-color);
+      --text-primary: #1a1a1a;
+      --text-muted: #667085;
+      --hackathon-yellow: #f59e0b;
+      --hackathon-red: #ef4444;
+      --sih-blue: #1e3a8a;
+      --radius: 18px;
+    }
+
+    [data-theme="dark"] {
+      --background: #0b0f19;
+      --surface: #121826;
+      --surface-strong: #171f31;
+      --border-color: #293248;
+      --border: 1px solid var(--border-color);
+      --text-primary: #f4f7fb;
+      --text-muted: #a4adbd;
+      --accent: #8b9bff;
+      --accent-hover: #b8c1ff;
+      --hackathon-yellow: #fbbf24;
+      --hackathon-red: #f87171;
+      --sih-blue: #3b82f6;
+      --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-color: rgba(37, 99, 235, 0.45) transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text-primary);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      position: fixed;
+      inset: -50%;
+      z-index: -2;
+      background-color: var(--background);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(26, 26, 26, 0.04) 0%, transparent 40%);
+      background-size: 100% 100%;
+      content: "";
+      animation: softOrbDrift 25s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+
+    @keyframes softOrbDrift {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(180deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: var(--border);
+      background: rgba(250, 250, 249, 0.82);
+      
+      -webkit-
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .logo {
+      color: var(--accent);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      font-style: italic;
+    }
+
+    .back-link {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .hero {
+      padding: 86px 0 46px;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .label::before {
+      width: 30px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    h1 {
+      max-width: 780px;
+      margin-bottom: 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(44px, 7vw, 86px);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .intro {
+      max-width: 720px;
+      color: var(--text-muted);
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .gallery-shell {
+      padding: 22px 0 90px;
+    }
+
+    .gallery-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .gallery-top p {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .count {
+      padding: 8px 14px;
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .certificate-track {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      padding: 8px 2px 28px;
+      scroll-behavior: smooth;
+      scroll-padding: 40px;
+      scroll-snap-type: x mandatory;
+      scrollbar-color: rgba(37, 99, 235, 0.48) rgba(37, 99, 235, 0.08);
+      scrollbar-width: thin;
+      will-change: scroll-position;
+    }
+
+    .certificate-track::-webkit-scrollbar {
+      height: 12px;
+    }
+
+    .certificate-track::-webkit-scrollbar-track {
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .certificate-track::-webkit-scrollbar-thumb {
+      border: 3px solid rgba(250, 250, 249, 0.95);
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.52);
+      background-clip: padding-box;
+    }
+
+    .cert-page {
+      position: relative;
+      display: grid;
+      flex: 0 0 min(540px, 82vw);
+      min-height: 320px;
+      align-content: center;
+      justify-items: center;
+      padding: 44px 32px 40px;
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: 0 14px 40px rgba(26, 26, 26, 0.09);
+      scroll-snap-align: center;
+      overflow: visible;
+      transform: translateZ(0);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .cert-page:hover {
+      box-shadow: 0 26px 70px rgba(26, 26, 26, 0.14);
+      transform: translateY(-3px) translateZ(0);
+    }
+
+    .esummit {
+      border: 1px solid rgba(32, 42, 88, 0.18);
+      color: var(--text-primary);
+      clip-path: inset(0 round var(--radius));
+    }
+
+    .esummit::before {
+      position: absolute;
+      top: -80px;
+      bottom: -80px;
+      left: -110px;
+      width: 250px;
+      background: linear-gradient(135deg, #1f294f, #53609b);
+      content: "";
+      transform: skewX(-26deg);
+      pointer-events: none;
+    }
+
+    .esummit::after {
+      position: absolute;
+      bottom: -86px;
+      left: -10px;
+      width: 160px;
+      height: 220px;
+      background: #7482c6;
+      content: "";
+      transform: rotate(-38deg);
+      pointer-events: none;
+    }
+
+    .cert-logos {
+      position: absolute;
+      z-index: 2;
+      top: 16px;
+      right: 24px;
+      left: 24px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .event-title {
+      position: relative;
+      z-index: 2;
+      margin: 10px 0 14px;
+      color: var(--text-primary);
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .serif-title {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(18px, 3vw, 26px);
+      letter-spacing: 0.03em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .presented {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .name {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(22px, 4vw, 32px);
+      text-transform: uppercase;
+    }
+
+    .rule {
+      position: relative;
+      z-index: 2;
+      width: min(360px, 70%);
+      height: 1px;
+      margin-bottom: 14px;
+      background: #111;
+    }
+
+    .cert-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 460px;
+      color: var(--text-primary);
+      font-size: clamp(13px, 1.8vw, 16px);
+      font-weight: 700;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .cert-copy strong {
+      display: block;
+      margin: 6px 0;
+      font-size: clamp(18px, 2.5vw, 24px);
+      text-transform: uppercase;
+    }
+
+    .gdg {
+      border: 6px solid #f4d7d7;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(66, 133, 244, 0.18), transparent 14%),
+        radial-gradient(circle at 18% 14%, rgba(251, 188, 5, 0.18), transparent 18%),
+        radial-gradient(circle at 90% 88%, rgba(66, 133, 244, 0.12), transparent 18%),
+        #fffdfb;
+      color: var(--text-muted);
+    }
+
+    .gdg-top {
+      position: absolute;
+      top: 18px;
+      right: 28px;
+      left: 28px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .gdg-brand {
+      margin-bottom: 18px;
+      color: var(--text-muted);
+      font-size: clamp(15px, 2.6vw, 22px);
+      text-align: center;
+    }
+
+    .gdg-title {
+      margin-bottom: 12px;
+      color: var(--text-muted);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 5.5vw, 50px);
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .gdg-subtitle {
+      margin-bottom: 14px;
+      color: var(--text-primary);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(16px, 2.4vw, 22px);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .gdg-copy {
+      max-width: 460px;
+      color: var(--text-muted);
+      font-size: clamp(13px, 1.8vw, 17px);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .gdg-copy strong {
+      display: block;
+      margin: 10px 0;
+      letter-spacing: 0.06em;
+    }
+
+    /* Force dark text for certificate content even in dark mode */
+    [data-theme="dark"] .cert-page,
+    [data-theme="dark"] .cert-page *,
+    [data-theme="dark"] .gdg,
+    [data-theme="dark"] .gdg * {
+      color: #111 !important;
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        padding: 0 18px;
+      }
+
+      .hero {
+        padding-top: 48px;
+      }
+
+      .gallery-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .cert-page {
+        flex-basis: 82vw;
+        min-height: auto;
+        padding: 38px 18px 30px;
+      }
+
+      .cert-logos,
+      .gdg-top {
+        top: 12px;
+        right: 14px;
+        left: 14px;
+        font-size: 8px;
+      }
+
+      .event-title {
+        font-size: 26px;
+      }
+
+      .serif-title {
+        font-size: 16px;
+      }
+
+      .name {
+        font-size: 22px;
+      }
+
+      .presented {
+        font-size: 13px;
+      }
+
+      .gdg-brand {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .gdg-title {
+        font-size: 28px;
+        letter-spacing: 0.08em;
+      }
+
+      .gdg-subtitle {
+        font-size: 14px;
+      }
+
+      .gdg-copy {
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .gdg-copy strong {
+        font-size: 18px;
+      }
+
+      .cert-copy {
+        font-size: 12px;
+      }
+
+      .cert-copy strong {
+        font-size: 16px;
+      }
+
+      .esummit::before {
+        left: -140px;
+        width: 180px;
+      }
+
+      .esummit::after {
+        bottom: -110px;
+        left: -30px;
+        width: 110px;
+        height: 160px;
+      }
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-left: 16px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-color);
+      background: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 18px;
+      transition: opacity 0.2s ease;
+      padding-top: 2px;
+    }
+    .theme-toggle:hover {
+      opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+      .theme-toggle {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+      }
+    }
+  </style>
+
+  <script>
+    const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        if (savedTheme === 'dark') {
+          themeToggle.innerHTML = '☀️';
+        } else {
+          themeToggle.innerHTML = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('portfolio-theme', newTheme);
+          themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true">
+    <span class="ambient-orbit orbit-one"></span>
+    <span class="ambient-orbit orbit-two"></span>
+    <span class="ambient-cube cube-one"></span>
+    <span class="ambient-cube cube-two"></span>
+    <span class="ambient-ring"></span>
+    <span class="dark-wave wave-one"></span>
+    <span class="dark-wave wave-two"></span>
+    <span class="dark-pulse pulse-one"></span>
+    <span class="dark-pulse pulse-two"></span>
+  </div>
+  <nav class="page-nav">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">SK</a>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <a class="back-link" href="index.html#certificates">Back to Portfolio</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="container">
+        <p class="label">Certificates</p>
+        <h1>Hackathon Certificates</h1>
+        <p class="intro">Competition and participation certificates from campus events and hackathons. Scroll horizontally to view each certificate.</p>
+      </div>
+    </header>
+
+    <section class="gallery-shell" aria-label="Hackathon certificate gallery">
+      <div class="container">
+        <div class="gallery-top">
+          <p>Swipe sideways or use the horizontal scrollbar.</p>
+          <span class="count">2 Certificates</span>
+        </div>
+        <div class="certificate-track">
+          <article class="cert-page esummit">
+            <div class="cert-logos">
+              <span>MIT Academy of Engineering</span>
+              <span>MITAOE E-Cell</span>
+              <span>MITAOE EDF</span>
+            </div>
+            <h2 class="event-title">E-Summit'26</h2>
+            <p class="serif-title">Certificate of Finalist</p>
+            <p class="presented">is presented to</p>
+            <p class="name">Sahil Karande</p>
+            <span class="rule"></span>
+            <p class="cert-copy">For securing a place among the Top Finalist Teams at <strong>Innoventure 2026</strong> at E-Summit'26, organized by Entrepreneurship Development Cell, MIT Academy of Engineering in February 2026</p>
+          </article>
+          <article class="cert-page gdg">
+            <div class="gdg-top">
+              <span>Nirmaan</span>
+              <span>MIT Academy of Engineering</span>
+            </div>
+            <p class="gdg-brand">Google Developer Groups<br>On Campus · MIT Academy of Engineering</p>
+            <h2 class="gdg-title">Certificate</h2>
+            <p class="gdg-subtitle">of Participation</p>
+            <p class="gdg-copy">This certificate recognizes the contribution of <strong>INNOV8 - Sahil karande</strong> For actively participating in NIrmaan 4.0 - Nexus of Evolution Hackathon 2026 in the Code Crafters category held under the Google Developer Groups on Campus MITAOE</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
