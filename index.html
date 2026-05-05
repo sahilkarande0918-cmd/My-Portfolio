@@ -1372,28 +1372,47 @@
       }
     }
 
-    .theme-toggle {
+        .theme-toggle {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-left: 16px;
-      padding-left: 16px;
-      border-left: 1px solid var(--border-color);
-      background: none;
-      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-strong);
+      border: 1px solid var(--border-color);
       cursor: pointer;
       color: var(--text-primary);
       font-size: 18px;
-      transition: opacity 0.2s ease;
+      transition: all 0.2s ease;
+      margin-left: 8px;
     }
-    .theme-toggle:hover { opacity: 0.7; }
+    .theme-toggle:hover {
+      background: var(--border-color);
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+      .theme-toggle { width: 36px; height: 36px; font-size: 16px; }
+    }
+    .theme-toggle:hover {
+      background: var(--border-color);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
 
     /* Fix global overflow issues */
     html, body {
       max-width: 100%;
       overflow-x: hidden;
       position: relative;
+      width: 100%;
     }
   
     /* Global Fix */
@@ -1444,12 +1463,14 @@
   <nav class="site-nav" aria-label="Primary navigation">
     <div class="container nav-inner">
       <a class="logo" href="#hero" aria-label="Sahil Karande home">SK</a>
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#certificates">Certificates</a>
-        <a href="#contact">Contact</a>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#certificates">Certificates</a>
+          <a href="#contact">Contact</a>
+        </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
       </div>
     </div>
